@@ -1,5 +1,5 @@
 <template>
-  <b-card v-if="barChart.chartOptions.xaxis.categories.length > 0" no-body>
+  <b-card no-body>
     <b-card-header>
       <div>
         <b-card-title>
@@ -17,21 +17,22 @@
             @click="getData()"
             icon="RefreshCcwIcon"
             size="16"
+            style="cursor: pointer"
         />
         <feather-icon
             icon="CalendarIcon"
             size="16"
         />
-        <flat-pickr
+        <!-- <flat-pickr
             v-model="rangePicker"
             :config="{ mode: 'range'}"
             class="form-control flat-picker bg-transparent border-0 shadow-none"
             placeholder="YYYY-MM-DD"
-        />
+        /> -->
       </div>
 
     </b-card-header>
-    <b-card-body>
+    <b-card-body  v-if="barChart.chartOptions.xaxis.categories.length > 0">
       <vue-apex-charts
         v-if="barChart.chartOptions.xaxis.categories.length > 0"
         type="bar"
@@ -115,6 +116,9 @@ export default {
   },
   methods: {
     getData() {
+      this.barChart.series[0].data = [];
+      this.barChart.chartOptions.xaxis.categories = [];
+      this.rangePicker = [];
       if (this.chartType === 'monthly') {
         this.getInvoicesMonth()
       }
