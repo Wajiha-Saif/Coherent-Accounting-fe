@@ -23,12 +23,12 @@
             icon="CalendarIcon"
             size="16"
         />
-        <!-- <flat-pickr
+        <flat-pickr
             v-model="rangePicker"
             :config="{ mode: 'range'}"
             class="form-control flat-picker bg-transparent border-0 shadow-none"
             placeholder="YYYY-MM-DD"
-        /> -->
+        />
       </div>
 
     </b-card-header>
@@ -54,6 +54,8 @@ import {
 } from 'bootstrap-vue'
 import VueApexCharts from 'vue-apexcharts'
 import flatPickr from 'vue-flatpickr-component'
+import "flatpickr/dist/flatpickr.css";
+
 import { $themeColors } from '@themeConfig'
 import axios from '@/libs/axios'
 
@@ -118,7 +120,7 @@ export default {
     getData() {
       this.barChart.series[0].data = [];
       this.barChart.chartOptions.xaxis.categories = [];
-      this.rangePicker = [];
+      // this.rangePicker = [];
       if (this.chartType === 'monthly') {
         this.getInvoicesMonth()
       }

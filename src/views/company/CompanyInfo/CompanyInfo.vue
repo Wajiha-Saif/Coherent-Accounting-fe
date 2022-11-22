@@ -166,11 +166,11 @@
                       <tr>
                         <th class="pb-50">
                           <feather-icon icon="MapPinIcon" class="mr-75" />
-                         
+
                           <span class="font-weight-bold">Address</span>
                         </th>
                         <td class="pb-50">
-                          {{ companyRecord.companyAddress.substr(0,38)}}
+                          {{ companyRecord.companyAddress.substr(0, 38) }}
                         </td>
                       </tr>
                       <tr>
@@ -193,7 +193,7 @@
                               d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
                             ></path>
                           </svg>
-                         
+
                           <span class="font-weight-bold">Country</span>
                         </th>
                         <td class="pb-50">
@@ -295,61 +295,59 @@
         <!-- </div> -->
         <!-- </div> -->
       </b-col>
-       
-        <!-- Report time-line card -->
+
+      <!-- Report time-line card -->
       <b-col class="mb-1 ml-0" cols="4"> </b-col>
-      <b-col  class="mb-1" cols="6">
+      <b-col class="mb-1" cols="6">
         <b-card no-body style="padding: 0px 10px" class="mb-2">
           <b-card-header>
             <b-card-title> Report Timeline </b-card-title>
             <div class="d-flex align-items-center">
-
-               
-              <feather-icon  icon="MenuIcon"  size="18" class="mr-2" v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-      v-b-toggle.collapse-1
-      variant="outline-primary"/>
-              <!-- <b-button
-      
-    >
-      Toggle Collapse
-    </b-button> -->
               <feather-icon
                 @click="refreshMonthReportGraph()"
                 icon="RefreshCcwIcon"
                 size="16"
                 style="cursor: pointer"
               />
+              <feather-icon
+                icon="ChevronDownIcon"
+                size="22"
+                class="ml-2"
+                v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                v-b-toggle.collapse-1
+                variant="outline-primary"
+                style="margin-right: -10px"
+              />
             </div>
           </b-card-header>
-          <b-collapse
-      id="collapse-1"
-      class="mt-2"
-      visible
-    >
-          <b-card-body style="padding: 0px 15px" v-if="monthlyReportGraph.length > 0">
-            <app-timeline>
-              <app-timeline-item
-                v-for="(graph, index) in monthlyReportGraph"
-                :key="index"
-                :variant="variants[index % variants.length]"
-              >
-                <div
-                  class="
-                    d-flex
-                    justify-content-between
-                    flex-sm-row flex-column
-                    mb-sm-0 mb-1
-                  "
+          <b-collapse id="collapse-1" class="mt-2" visible>
+            <b-card-body
+              style="padding: 0px 15px"
+              v-if="monthlyReportGraph.length > 0"
+            >
+              <app-timeline>
+                <app-timeline-item
+                  v-for="(graph, index) in monthlyReportGraph"
+                  :key="index"
+                  :variant="variants[index % variants.length]"
                 >
-                  <h6>{{ graph.count }} Reports have been created</h6>
-                  <small
-                    class="timeline-item-time text-nowrap text-muted ml-1"
-                    >{{ graph.date }}</small
+                  <div
+                    class="
+                      d-flex
+                      justify-content-between
+                      flex-sm-row flex-column
+                      mb-sm-0 mb-1
+                    "
                   >
-                </div>
-              </app-timeline-item>
-            </app-timeline>
-          </b-card-body>
+                    <h6>{{ graph.count }} Reports have been created</h6>
+                    <small
+                      class="timeline-item-time text-nowrap text-muted ml-1"
+                      >{{ graph.date }}</small
+                    >
+                  </div>
+                </app-timeline-item>
+              </app-timeline>
+            </b-card-body>
           </b-collapse>
         </b-card>
 
@@ -366,7 +364,20 @@
         >
           <b-card-header>
             <b-card-title>Company Invoices</b-card-title>
+            <div class="d-flex align-items-center">
+            
+              <feather-icon
+                icon="ChevronDownIcon"
+                size="22"
+                class="ml-2"
+                v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                v-b-toggle.collapse-2
+                variant="outline-primary"
+                style="margin-right: -10px"
+              />
+            </div>
           </b-card-header>
+          <b-collapse id="collapse-2" class="mt-2" visible>
           <b-card-body style="padding: 0px 15px">
             <b-table
               :items="companyInvoices"
@@ -376,6 +387,9 @@
               show-empty
               empty-text="No matching records found"
               class="position-relative invoiceList"
+              :sort-by.sync="sortBy"  
+              :sort-desc.sync="sortDesc" 
+              @sort-changed="checkStatus"
             >
               <!-- <template #head(invoiceStatus)>
                 <feather-icon icon="TrendingUpIcon" class="mx-auto" />
@@ -383,31 +397,30 @@
 
               <!-- Column: Id -->
               <template #cell(id)="data">
-                <!-- <b-link
+                <b-link
                   :to="{
-                    name: 'apps-invoice-preview',
+                    name: 'company-invoice-preview',
                     params: { id: data.item.id },
                   }"
                   class="font-weight-bold"
-                > -->
-                  #{{ data.item.id }}
-                <!-- </b-link> -->
+                >
+                #{{ data.item.id }}
+                </b-link>
               </template>
 
               <!-- Column: invoiceNumber -->
               <template #cell(invoiceNumber)="data">
-                <!-- <b-link
+                <b-link
                   :to="{
-                    name: 'apps-invoice-preview',
+                    name: 'company-invoice-preview',
                     params: { id: data.item.id },
                   }"
                   class="font-weight-bold"
-                > -->
-                  <span class="text-nowrap">
-                    {{ data.item.invoiceNumber }}
-                  </span>
-                <!-- </b-link> -->
-                
+                >
+                <span class="text-nowrap">
+                  {{ data.item.invoiceNumber }}
+                </span>
+                </b-link>
               </template>
 
               <!-- Column: Issued Date -->
@@ -418,17 +431,17 @@
               </template>
 
               <template #cell(documentType)="data">
-                <!-- <b-link
+                <b-link
                   :to="{
-                    name: 'apps-invoice-preview',
+                   name: 'company-invoice-preview',
                     params: { id: data.item.id },
                   }"
                   class="font-weight-bold"
-                > -->
+                >
                 <span class="text-nowrap">
                   {{ data.item.documentType }}
                 </span>
-                <!-- </b-link> -->
+                </b-link>
               </template>
 
               <!-- Column: recipientCompany -->
@@ -510,10 +523,13 @@
               <!-- Column: amount non vat -->
               <template #cell(amountNonVat)="data">
                 <span class="text-nowrap">
-                  <span v-if="(data.item.currency == 'lv') || (data.item.currency == 'LV')" 
+                  <span
+                    v-if="
+                      data.item.currency == 'lv' || data.item.currency == 'LV'
+                    "
                     >лв{{ data.value }}</span
                   >
-                 
+
                   <span v-if="data.item.currency == 'usd'"
                     >${{ data.value }}</span
                   >
@@ -526,7 +542,10 @@
               <!-- Column: totalAmount -->
               <template #cell(totalAmount)="data">
                 <span class="text-nowrap">
-                  <span v-if="data.item.currency == 'lv' || (data.item.currency == 'LV')"
+                  <span
+                    v-if="
+                      data.item.currency == 'lv' || data.item.currency == 'LV'
+                    "
                     >лв{{ data.value }}</span
                   >
                   <span v-if="data.item.currency == 'usd'"
@@ -541,7 +560,10 @@
               <!-- Column: vatAmount -->
               <template #cell(vatAmount)="data">
                 <span class="text-nowrap">
-                  <span v-if="data.item.currency == 'lv' || (data.item.currency == 'LV')"
+                  <span
+                    v-if="
+                      data.item.currency == 'lv' || data.item.currency == 'LV'
+                    "
                     >лв{{ data.value }}</span
                   >
                   <span v-if="data.item.currency == 'usd'"
@@ -563,14 +585,14 @@
               <!-- Column: Actions -->
               <template #cell(actions)="data">
                 <div class="text-nowrap">
-                  <!-- <feather-icon
+                  <feather-icon
                     :id="`invoice-row-${data.item.id}-preview-icon`"
                     icon="EyeIcon"
                     size="16"
                     class="mx-1 cursor-pointer"
                     @click="
                       $router.push({
-                        name: 'apps-invoice-preview',
+                        name: 'company-invoice-preview',
                         params: { id: data.item.id },
                       })
                     "
@@ -579,7 +601,7 @@
                     title="Preview Invoice"
                     class="cursor-pointer"
                     :target="`invoice-row-${data.item.id}-preview-icon`"
-                  /> -->
+                  />
 
                   <!-- Dropdown -->
                   <b-dropdown
@@ -595,10 +617,10 @@
                         class="align-middle text-body"
                       />
                     </template>
-                    <!-- <b-dropdown-item @click="generatePDF(data.item.id)">
+                    <b-dropdown-item @click="generatePDF(data.item.id)">
                       <feather-icon icon="DownloadIcon" />
                       <span class="align-middle ml-50">Download</span>
-                    </b-dropdown-item> -->
+                    </b-dropdown-item>
                     <b-dropdown-item
                       :to="{
                         name: 'apps-invoice-edit',
@@ -609,13 +631,13 @@
                       <span class="align-middle ml-50">Edit</span>
                     </b-dropdown-item>
                     <b-dropdown-item
-                      @click="invoiceDelete(data.item.id, refetchData)"
+                      @click="deleteCompanyInvoice(data.item.id)"
                     >
                       <feather-icon icon="TrashIcon" />
                       <span class="align-middle ml-50">Delete</span>
                     </b-dropdown-item>
                   </b-dropdown>
-                  <!-- <vue-html2pdf
+                  <vue-html2pdf
                     :show-layout="false"
                     :float-layout="true"
                     :enable-download="true"
@@ -637,11 +659,13 @@
                     >
                       <invoice-download :invoice-data="data.item" />
                     </section>
-                  </vue-html2pdf> -->
+                  </vue-html2pdf>
                 </div>
               </template>
             </b-table>
+            
           </b-card-body>
+          </b-collapse>
         </b-card>
       </b-col>
       <b-col class="mb-1" cols="6">
@@ -651,7 +675,7 @@
           chart-type="daily"
           title="Invoices Per Day"
         />
-         <!-- Invoices Per Month -->
+        <!-- Invoices Per Month -->
         <ApexBarChart
           class="mb-1"
           chart-type="monthly"
@@ -670,6 +694,12 @@ import AppTimeline from "@core/components/app-timeline/AppTimeline.vue";
 import AppTimelineItem from "@core/components/app-timeline/AppTimelineItem.vue";
 // eslint-disable-next-line import/extensions
 import ApexBarChart from "@/views/company/ApexBarChart";
+import VueHtml2pdf from "vue-html2pdf";
+import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+
+import InvoiceDownload from '../../invoice/invoice-download/InvoiceDownload.vue'
+
+
 
 
 const chartColors = {
@@ -706,7 +736,7 @@ import {
   BBadge,
   BTooltip,
   BCollapse,
-  VBToggle
+  VBToggle,
 } from "bootstrap-vue";
 
 export default {
@@ -728,31 +758,37 @@ export default {
     BBadge,
     BTooltip,
     BCollapse,
-    VBToggle
+    VBToggle,
+    VueHtml2pdf,
+    InvoiceDownload
   },
   directives: {
     Ripple,
     "b-tooltip": VBTooltip,
-    'b-toggle': VBToggle,
+    "b-toggle": VBToggle,
   },
   data() {
     return {
+      sortBy : 'id',
+      sortDesc: false,
       tableColumns: [
-        { key: "id", label: "#" },
-        { key: "invoiceNumber" },
-        { key: "invoiceDate", label: "date Issued" },
-        { key: "documentType" },
+        { key: "id", label: "#", sortable: true},
+        { key: "invoiceNumber", sortable: true },
+        { key: "invoiceDate", label: "date Issued", sortable: true },
+        { key: "documentType", sortable: true },
         {
           key: "recipientCompanyName",
           label: "recipient Company",
+          sortable: true
         },
         {
           key: "supplierCompanyName",
           label: "supplier Company",
+          sortable: true
         },
-        { key: "amountNonVat", label: "Amount Non Vat" },
-        { key: "totalAmount" },
-        { key: "vatAmount" },
+        { key: "amountNonVat", label: "Amount Non Vat", sortable: true},
+        { key: "totalAmount", sortable: true },
+        { key: "vatAmount", sortable: true },
         { key: "actions" },
       ],
       companyInvoices: [],
@@ -784,12 +820,72 @@ export default {
     this.getCompanyInvoices();
   },
   methods: {
-    refreshMonthReportGraph(){
+    async deleteCompanyInvoice(invoiceID) {
+      let self = this;
+      var config = {
+        method: "delete",
+        url: "/account/api/invoice/" + invoiceID,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+          "Access-Control-Allow-Credentials": true,
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+        },
+      };
+
+      await axios(config)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+          // console.log(companyID);
+          // Swal.fire({
+          //   position: "center",
+          //   icon: "success",
+          //   title: "Company Invoice Deleted!",
+          //   showConfirmButton: false,
+          //   timer: 1400,
+          // });
+         
+          self.$toast({
+            component: ToastificationContent,
+            props: {
+              title: `Company Invoice Deleted Successfully`,
+              icon: "DeleteIcon",
+              variant: "success",
+            },
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        setTimeout(() => {
+          this.getCompanyInvoices();
+      }, 1400);
+    },
+    // 
+    onProgress(event) {
+      console.log(`Processed: ${event} / 100`);
+    },
+    generatePDF(itemID) {
+      this.$refs['invoicePdf'+itemID].generatePdf();
+    },
+    // 
+    checkStatus(ctx){
+      if(ctx.sortDesc === false){
+        this.invoiceDirection = "asc";
+      }
+      else{
+        this.invoiceDirection = "desc";
+      }
+      this.invoiceSortField = ctx.sortBy;
+     this.getCompanyInvoices();
+     
+    },
+    // 
+    refreshMonthReportGraph() {
       this.monthlyReportGraph = [];
       this.getMonthReportGraph();
-
-
     },
+    //company invoices data
     async getCompanyInvoices() {
       let self = this;
       const data = await axios
