@@ -124,7 +124,7 @@
   //
   .nav-tabs .nav-link {
     padding: 0.47rem 0.78rem;
-    padding-top: 0.36rem;
+    padding-top: 1rem;
   }
   
   .card-body {
